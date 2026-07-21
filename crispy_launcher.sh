@@ -62,9 +62,20 @@ if [[ -d "$STEAM_HH_DIR" ]]; then
     done
 fi
 
+# Check if any base WADs are already in the local directories
+local_wads_detected=false
+for wad in "${DOOM_WADS[@]}"; do
+    if [[ -f "$WAD_DIR/$wad" ]]; then local_wads_detected=true; break; fi
+done
+if [[ "$local_wads_detected" == false ]]; then
+    for wad in "${HH_WADS[@]}"; do
+        if [[ -f "$HH_DIR/$wad" ]]; then local_wads_detected=true; break; fi
+    done
+fi
+
 # Warnings and pauses before launching menu
-if [[ "$steam_detected" == false ]]; then
-    echo -e "${RED}Warning: Steam installation folders not detected.${RESET}"
+if [[ "$steam_detected" == false && "$local_wads_detected" == false ]]; then
+    echo -e "${RED}Warning: Steam installation folders not detected, and no base WADs found locally.${RESET}"
     echo "Please ensure you manually copy your base WADs into:"
     echo " - $WAD_DIR"
     echo " - $HH_DIR"
@@ -126,7 +137,7 @@ cat << 'EOF'
  | |   | '__| / __| '_ \| | | | |   / _` | | | | '_ \ / __| '_ \ / _ \ '__|
  | |___| |  | \__ \ |_) | |_| | |__| (_| | |_| | | | | (__| | | |  __/ |
   \____|_|  |_|___/ .__/ \__, |_____\__,_|\__,_|_| |_|\___|_| |_|\___|_|
-                 |_|    |___/
+                  |_|    |___/
 
 EOF
     echo "==================================================================================="
@@ -309,7 +320,7 @@ cat << 'EOF'
                    |  _  |  __||    /|  __|  | |   | | | |
                    | | | | |___| |\ \| |___  | |  _| |_| \__/\
                    \_| |_|____/\_| \_\____/  \_/  \___/ \____/
-                                         +
+                                        +
                          _   _ _______   __ _____ _   _
                         | | | |  ___\ \ / /|  ___| \ | |
                         | |_| | |__  \ V / | |__ |  \| |
