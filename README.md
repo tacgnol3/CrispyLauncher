@@ -4,6 +4,8 @@ This script is made to work on linux using the files from Doom + Doom 2 and Here
 
 # Installation
 
+Note : This presume that you already have Crispy Doom engine installed.
+
 To install this script, clone this repo using this command :
 
 git clone https://github.com/tacgnol3/CrispyLauncher.git
