@@ -8,10 +8,10 @@ To install this script, clone this repo using this command :
 
 git clone https://github.com/tacgnol3/CrispyLauncher.git
 
-chmod + x crispy_launcher.sh
+chmod + x CrispyLauncher/crispy_launcher.sh
 
 
 
 To run :
 
-./crispy_launcher.sh
+cd CrispyLauncher && ./crispy_launcher.sh
