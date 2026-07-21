@@ -1,8 +1,8 @@
 # CrispyLauncher
 
-This script is made to work on linux using the files from Doom + Doom 2 and Heretic + Hexen games on steam.
+This script is made to work on linux using the files from Doom + Doom 2 and Heretic + Hexen games on steam. It's useful to use crispy doom engine on older hardware since the new Kex engine is a bit more demanding.
 
-#Installation
+# Installation
 
 To install this script, clone this repo using this command :
 
@@ -14,6 +14,10 @@ chmod + x crispy_launcher.sh
 
 
 
-To run :
+# To run :
 
 ./crispy_launcher.sh
+
+
+
+Note, this script was generated using AI (Gemini).
