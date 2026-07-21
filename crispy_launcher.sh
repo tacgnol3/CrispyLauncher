@@ -5,20 +5,76 @@ RED='\e[31m'
 BLACK_BG='\e[40m'
 RESET='\e[0m'
 
-# Define directories
-WAD_DIR="$HOME/.local/share/Steam/steamapps/common/Ultimate Doom/rerelease"
-HH_DIR="$HOME/.local/share/Steam/steamapps/common/Heretic + Hexen"
+# Define local directories
+WAD_DIR="$HOME/Games/Doom + Doom 2"
+HH_DIR="$HOME/Games/Heretic + Hexen"
 
+# Define Steam directories for scanning
+STEAM_DOOM_DIR="$HOME/.local/share/Steam/steamapps/common/Ultimate Doom/rerelease"
+STEAM_HH_DIR="$HOME/.local/share/Steam/steamapps/common/Heretic + Hexen"
+
+# Define mod sub-directories
 DOOM1_PWAD_DIR="$WAD_DIR/doom1_mods"
 DOOM2_PWAD_DIR="$WAD_DIR/doom2_mods"
 HERETIC_PWAD_DIR="$HH_DIR/heretic_mods"
 HEXEN_PWAD_DIR="$HH_DIR/hexen_mods"
 
-# Create directories if they do not exist
+# Create local directories if they do not exist
 mkdir -p "$DOOM1_PWAD_DIR"
 mkdir -p "$DOOM2_PWAD_DIR"
 mkdir -p "$HERETIC_PWAD_DIR"
 mkdir -p "$HEXEN_PWAD_DIR"
+
+# ==========================================
+#               WAD SCANNER
+# ==========================================
+DOOM_WADS=("doom.wad" "doom2.wad" "plutonia.wad" "tnt.wad" "sigil.wad" "sigil2.wad" "nerve.wad" "id1.wad")
+HH_WADS=("heretic.wad" "heretic_fr.wad" "hexen.wad" "hexdd.wad" "hexen_vog.wad")
+
+steam_detected=false
+files_copied=false
+
+echo -e "${BLACK_BG}\c"
+clear
+echo -e "${RED}${BLACK_BG}Scanning for base WADs...${RESET}"
+
+# Scan and copy from Doom Steam directory
+if [[ -d "$STEAM_DOOM_DIR" ]]; then
+    steam_detected=true
+    for wad in "${DOOM_WADS[@]}"; do
+        if [[ -f "$STEAM_DOOM_DIR/$wad" && ! -f "$WAD_DIR/$wad" ]]; then
+            echo "Copying $wad from Steam to local folder..."
+            cp "$STEAM_DOOM_DIR/$wad" "$WAD_DIR/"
+            files_copied=true
+        fi
+    done
+fi
+
+# Scan and copy from Heretic+Hexen Steam directory
+if [[ -d "$STEAM_HH_DIR" ]]; then
+    steam_detected=true
+    for wad in "${HH_WADS[@]}"; do
+        if [[ -f "$STEAM_HH_DIR/$wad" && ! -f "$HH_DIR/$wad" ]]; then
+            echo "Copying $wad from Steam to local folder..."
+            cp "$STEAM_HH_DIR/$wad" "$HH_DIR/"
+            files_copied=true
+        fi
+    done
+fi
+
+# Warnings and pauses before launching menu
+if [[ "$steam_detected" == false ]]; then
+    echo -e "${RED}Warning: Steam installation folders not detected.${RESET}"
+    echo "Please ensure you manually copy your base WADs into:"
+    echo " - $WAD_DIR"
+    echo " - $HH_DIR"
+    echo "Press [Enter] to continue to the launcher..."
+    read
+elif [[ "$files_copied" == true ]]; then
+    echo "Finished copying missing WADs."
+    echo "Press [Enter] to start launcher..."
+    read
+fi
 
 # ==========================================
 #               INPUT FUNCTION
@@ -71,6 +127,7 @@ cat << 'EOF'
  | |___| |  | \__ \ |_) | |_| | |__| (_| | |_| | | | | (__| | | |  __/ |
   \____|_|  |_|___/ .__/ \__, |_____\__,_|\__,_|_| |_|\___|_| |_|\___|_|
                  |_|    |___/
+
 EOF
     echo "==================================================================================="
 
